@@ -1,0 +1,15 @@
+{
+  "name": "media-session-api",
+  "version": "1.0.0",
+  "description": "A test application to demonstrate the Media Session API",
+  "main": "index.js",
+  "scripts": {
+    "serve": "http-server -S -C cert.pem",
+    "serve:silent": "http-server -s -S -C cert.pem"
+  },
+  "author": "Matt Crouch <matt@mattcrouch.net>",
+  "license": "ISC",
+  "devDependencies": {
+    "http-server": "^0.9.0"
+  }
+}

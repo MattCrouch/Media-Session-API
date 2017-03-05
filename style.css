@@ -1,0 +1,138 @@
+html {
+    box-sizing: border-box;
+}
+
+*, *:before, *:after {
+  box-sizing: inherit;
+}
+
+html, body {
+    margin: 0;
+    font-size: 20px;
+    font-family: Roboto, Arial, Helvetica, sans-serif;
+    background-color: #c0392b;
+}
+
+.wrapper {
+    width: 100%;
+    max-width: 400px;
+    margin: 0 auto;
+    padding: 0.5rem;
+}
+
+.now-playing > img, .playlist {
+    box-shadow: 0 2px 2px 0 rgba(0,0,0,0.14), 0 1px 5px 0 rgba(0,0,0,0.12), 0 3px 1px -2px rgba(0,0,0,0.2);
+}
+
+.now-playing {
+    position: relative;
+    cursor: pointer;
+}
+
+.now-playing:hover .status, .now-playing:focus .status {
+    background-color: rgba(255, 255, 255, 0.8);
+}
+
+
+.now-playing > img {
+    width: 100%;
+    /*border: 1px solid #e0e0e0;*/
+    border-radius: 2px;
+}
+
+.playlist {
+    list-style: none;
+    padding: 0;
+    margin-top: 0.5rem;
+    font-size: 16px;
+    border: 1px solid #e0e0e0;
+    border-radius: 2px;
+}
+
+.playlist > li {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    background-color: #ffffff;
+    padding: 0.5rem;
+    line-height: 1.5;
+    border-bottom: 1px solid #e0e0e0;
+}
+
+.playlist > li:last-child {
+    border-bottom: 0;
+}
+
+.playlist > li .info {
+    display: flex;
+    align-items: center;
+    flex-grow: 1;
+    min-width: 0;
+}
+
+.playlist > li .artwork {
+    max-height: 3rem;
+    margin-right: 0.5rem;
+    border-radius: 2px;
+}
+
+.now-playing .description {
+    position: absolute;
+    bottom: 5px;
+    line-height: 1.5;
+    padding: 3rem 1rem 0.5rem 1rem;
+    background-image: linear-gradient(rgba(255, 255, 255, 0), rgba(255, 255, 255, 0.7), rgba(255, 255, 255, 1));
+}
+
+.now-playing .description, .playlist > li .description {
+  min-width: 0;
+  width: 100%;
+}
+
+.now-playing .description span, .playlist > li .description span {
+    display: block;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.now-playing .description .title, .playlist > li .description .title {
+    font-weight: bold;
+}
+
+.now-playing .description .album, .playlist > li .description .album {
+    color: #6f7c7d;
+    font-size: smaller;
+}
+
+.now-playing .status, .playlist > li .status {
+    text-align: center;
+}
+
+.now-playing .status {
+    position: absolute;
+    margin: auto;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 4rem;
+    width: 4rem;
+    padding: 1rem;
+    border-radius: 2px;
+    background-color: rgba(255, 255, 255, 0.4);
+    transition: background-color 0.1s ease-out;
+}
+
+.playlist > li .status {
+    margin: 0 0.5rem;
+}
+
+.now-playing .status > img {
+    max-width: 2rem;
+}
+
+.playlist > li .status > img {
+    max-width: 1rem;
+}
