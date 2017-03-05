@@ -1,6 +1,6 @@
 (function() {
-    let btn = document.getElementById("player");
-    let player = document.createElement("audio");
+    let playlist = new Playlist(document.getElementById("playlist"));
+    let player = new Player(document.getElementById("player"));
 
     let feedUrls = [
         "https://toolsday.libsyn.com/rss", //Toolsday
@@ -8,59 +8,61 @@
         "https://simplecast.com/podcasts/282/rss", //The Bike Shed
     ];
 
-    let track = {
-        title: "THIS IS A TITLE",
-        artist: "THIS IS THE ARTIST",
-        album: "THIS IS AN ALBUM",
-        artwork: false
-    }
+    let fetchUrls = [];
 
-    fetch(feedUrls[2])
-        .then(response => response.text())
-        .then(data => {
+    //Fetch all the feeds!
+    feedUrls.forEach(function(url) {
+        fetchUrls.push(fetch(url));
+    }, this);
+
+    Promise.all(fetchUrls)
+        .then(feeds => {
             let parser = new DOMParser();
-            let xmlDoc = parser.parseFromString(data, "text/xml");
 
-            const channel = xmlDoc.getElementsByTagName("channel")[0];
-            const episode = channel.getElementsByTagName("item")[0];
-            
-            const url = episode.getElementsByTagName("enclosure")[0].getAttribute("url");
+            feeds.forEach(function(feed) {
+                //Get text body of response
+                feed.text().then(feedText => {
+                    //Parse feed
+                    let xmlDoc = parser.parseFromString(feedText, "text/xml");
+                    const channel = xmlDoc.getElementsByTagName("channel")[0];
+                    const items = channel.getElementsByTagName("item");
 
-            track.title = episode.getElementsByTagName("title")[0].textContent;
-            track.artist = channel.getElementsByTagNameNS("http://www.itunes.com/dtds/podcast-1.0.dtd", "author")[0].textContent;
-            track.album = channel.getElementsByTagName("title")[0].textContent;
-            track.artwork = [{
-                src: channel.getElementsByTagName("image")[0].getElementsByTagName("url")[0].textContent,
-                sizes: "2048x2048",
-                type: "image/jpg"
-            }];
+                    //Only get max the 5 most recent
+                    let maxLength = 5;
+                    if(items.length < 5) {
+                        maxLength = items.length;
+                    }
 
-            console.log(track);
-
-            player.src = url;
+                    for (let i = 0; i < maxLength; i++) {
+                        let item = items[i];
+                        let playlistItem = new PlaylistItem(channel, item);
+                        playlist.add(playlistItem);
+                    }
+                });
+            }, this);
         });
 
-    btn.addEventListener("click", e => {
-        player.play()
-            .then(() => {
-                if ('mediaSession' in navigator) {
-                    alert("OLE!");
-                    navigator.mediaSession.metadata = new MediaMetadata({
-                        title: track.title,
-                        artist: track.artist,
-                        album: track.album,
-                        artwork: track.artwork
-                    });
-                }
-            });
-    });
+    // btn.addEventListener("click", e => {
+    //     player.play()
+    //         .then(() => {
+    //             if ('mediaSession' in navigator) {
+    //                 alert("OLE!");
+    //                 navigator.mediaSession.metadata = new MediaMetadata({
+    //                     title: track.title,
+    //                     artist: track.artist,
+    //                     album: track.album,
+    //                     artwork: track.artwork
+    //                 });
+    //             }
+    //         });
+    // });
 
-    if ('mediaSession' in navigator) {
-        navigator.mediaSession.setActionHandler('play', function() {});
-        navigator.mediaSession.setActionHandler('pause', function() {});
-        navigator.mediaSession.setActionHandler('seekbackward', function() {});
-        navigator.mediaSession.setActionHandler('seekforward', function() {});
-        navigator.mediaSession.setActionHandler('previoustrack', function() {});
-        navigator.mediaSession.setActionHandler('nexttrack', function() {});
-    }
+    // if ('mediaSession' in navigator) {
+    //     navigator.mediaSession.setActionHandler('play', function() {});
+    //     navigator.mediaSession.setActionHandler('pause', function() {});
+    //     navigator.mediaSession.setActionHandler('seekbackward', function() {});
+    //     navigator.mediaSession.setActionHandler('seekforward', function() {});
+    //     navigator.mediaSession.setActionHandler('previoustrack', function() {});
+    //     navigator.mediaSession.setActionHandler('nexttrack', function() {});
+    // }
 })();

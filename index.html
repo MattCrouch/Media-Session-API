@@ -7,9 +7,8 @@
         <link href="style.css" rel="stylesheet">
     </head>
     <body>
-        <!--<button id="player">Play</button>-->
         <div class="wrapper">
-            <div class="player">
+            <div id="player" class="player">
                 <section class="now-playing" tabindex="0">
                     <img src="https://ssl-static.libsyn.com/p/assets/9/1/b/9/91b92836b7bd137c/cover-art-2015ii.jpg" alt="Now Playing" class="artwork" />
                    
@@ -23,70 +22,14 @@
                     </div>
                 </section>
 
-                <ul class="playlist">
-                    <li tabindex="0">
-                        <div class="info">
-                            <img src="assets/now-playing-placeholder.png" alt="Now Playing" class="artwork" />
-                            <div class="description">
-                                <span class="title">This is the episode title</span>
-                                <span class="album">Podcast Name</span>
-                            </div>
-                        </div>
-                        <div class="status">
-                            
-                        </div>
-                    </li>
-                    <li tabindex="0">
-                        <div class="info">
-                            <img src="assets/now-playing-placeholder.png" alt="Now Playing" class="artwork" />
-                            <div class="description">
-                                <span class="title">This is the episode title</span>
-                                <span class="album">Podcast Name</span>
-                            </div>
-                        </div>
-                        <div class="status">
-                            
-                        </div>
-                    </li>
-                    <li tabindex="0">
-                        <div class="info">
-                            <img src="assets/now-playing-placeholder.png" alt="Now Playing" class="artwork" />
-                            <div class="description">
-                                <span class="title">This is the episode title</span>
-                                <span class="album">Podcast Name</span>
-                            </div>
-                        </div>
-                        <div class="status">
-                            
-                        </div>
-                    </li>
-                    <li tabindex="0">
-                        <div class="info">
-                            <img src="assets/now-playing-placeholder.png" alt="Now Playing" class="artwork" />
-                            <div class="description">
-                                <span class="title">This is the episode title</span>
-                                <span class="album">Podcast Name</span>
-                            </div>
-                        </div>
-                        <div class="status">
-                            
-                        </div>
-                    </li>
-                    <li tabindex="0">
-                        <div class="info">
-                            <img src="assets/now-playing-placeholder.png" alt="Now Playing" class="artwork" />
-                            <div class="description">
-                                <span class="title">This is the episode title</span>
-                                <span class="album">Podcast Name</span>
-                            </div>
-                        </div>
-                        <div class="status">
-                            
-                        </div>
-                    </li>
+                <ul id="playlist" class="playlist">
+                    <li>Loading...</li>
                 </ul>
             </div>
         </div>
     </body>
-    <!--<script src="main.js"></script>-->
+    <script src="Player.js"></script>
+    <script src="Playlist.js"></script>
+    <script src="PlaylistItem.js"></script>
+    <script src="main.js"></script>
 </html>
