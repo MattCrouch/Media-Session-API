@@ -1,6 +1,6 @@
 (function() {
     let playlist = new Playlist(document.getElementById("playlist"));
-    let player = new Player(document.getElementById("player"));
+    let player = new Player(document.querySelector(".now-playing"));
 
     let feedUrls = [
         "https://toolsday.libsyn.com/rss", //Toolsday

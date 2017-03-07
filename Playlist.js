@@ -8,11 +8,26 @@ var Playlist = function(list) {
     function addToPlaylist(item) {
         items.push(item);
 
+        _sortPlaylist();
         _renderPlaylist();
     }
 
     function removeFromPlaylist(item) {
         //TODO: Removal
+    }
+
+    function _sortPlaylist() {
+        //TODO: Only do at the end? Wasteful otherwise.
+        function byDateDesc(a, b) {
+            if(a.pubDate < b.pubDate) {
+                return 1;
+            } else if(a.pubDate > b.pubDate) {
+                return -1;
+            }
+            return 0;
+        }
+
+        items.sort(byDateDesc);
     }
 
     function _renderPlaylist() {
