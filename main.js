@@ -18,10 +18,15 @@
     Promise.all(fetchUrls)
         .then(feeds => {
             let parser = new DOMParser();
+            let textPromises = [];
 
             feeds.forEach(function(feed) {
                 //Get text body of response
-                feed.text().then(feedText => {
+                let text = feed.text();
+
+                textPromises.push(text);
+
+                text.then(feedText => {
                     //Parse feed
                     let xmlDoc = parser.parseFromString(feedText, "text/xml");
                     const channel = xmlDoc.getElementsByTagName("channel")[0];
@@ -40,6 +45,10 @@
                     }
                 });
             }, this);
+
+            Promise.all(textPromises).then(filfilled => {
+                player.setActiveItem(playlist.getPlaylist()[0]);
+            });
         });
 
     // btn.addEventListener("click", e => {
