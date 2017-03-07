@@ -6,8 +6,8 @@
         "https://toolsday.libsyn.com/rss", //Toolsday
         "https://simplecast.com/podcasts/282/rss", //The Bike Shed
         "https://answermethis.libsyn.com/rss", //Answer Me This
-        "https://rss.acast.com/themodernmann", //The Modern Mann
-        "https://phptownhall.com/itunes.rss", //PHP Town Hall
+        // "https://rss.acast.com/themodernmann", //The Modern Mann
+        // "https://phptownhall.com/itunes.rss", //PHP Town Hall
 
     ];
 
