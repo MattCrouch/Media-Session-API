@@ -1,8 +1,14 @@
 var Playlist = function(list) {
+    let subscribers = [];
     let items = [];
+    let activeIndex = 0;
 
     function getPlaylist() {
         return items;
+    }
+
+    function getActiveItem() {
+        return items[activeIndex];
     }
 
     function addToPlaylist(item) {
@@ -64,6 +70,10 @@ var Playlist = function(list) {
         let status = document.createElement("div");
         status.className = "status";
 
+        if(item.playing) {
+            status.innerHTML = "<img src='assets/play.png' alt='' />";
+        }
+
         description.appendChild(title);
         description.appendChild(album);
 
@@ -76,9 +86,59 @@ var Playlist = function(list) {
         return li;
     }
 
+    function prev() {
+        if(activeIndex - 1 < 0) {
+            activeIndex = items.length - 1;
+        } else {
+            activeIndex--;
+        }
+
+        console.log(activeIndex);
+    }
+
+    function next() {
+        if(activeIndex + 1 > items.length - 1) {
+            activeIndex = 0;
+        } else {
+            activeIndex++;
+        }
+
+        console.log(activeIndex);
+    }
+
+    function subscribe(subscriber) {
+        subscribers.push(subscriber);
+    }
+
+    function notify(action, data) {
+        switch(action) {
+            case "play":
+                // getActiveItem().playing = true;
+                _renderPlaylist();
+                break;
+            case "pause":
+                // getActiveItem().playing = false;
+                _renderPlaylist();
+                break;
+            case "next":
+                next();
+                subscribers[0].notify("activeItemChanged", { activeItem: getActiveItem() });
+                _renderPlaylist();                
+                break;
+            case "prev":
+                prev();
+                subscribers[0].notify("activeItemChanged", { activeItem: getActiveItem() });                
+                _renderPlaylist();                
+                break;
+        }
+    }
+
     return {
+        subscribe: subscribe,
+        notify: notify,
         getPlaylist: getPlaylist,
+        getActiveItem: getActiveItem,
         add: addToPlaylist,
-        remove: removeFromPlaylist
+        remove: removeFromPlaylist,
     }
 };

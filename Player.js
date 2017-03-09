@@ -1,4 +1,5 @@
 var Player = function(player) {
+    let subscribers = [];
     let audioElement = document.createElement("audio");
     let activeItem;
 
@@ -9,6 +10,19 @@ var Player = function(player) {
     let status = document.querySelector(".status");
 
     player.addEventListener("click", _togglePlayer);
+
+    _setUpMediaSessionListeners();
+
+    function _setUpMediaSessionListeners() {
+        if('mediaSession' in navigator) {
+            navigator.mediaSession.setActionHandler('play', play);
+            navigator.mediaSession.setActionHandler('pause', pause);
+            navigator.mediaSession.setActionHandler('seekbackward', function() {});
+            navigator.mediaSession.setActionHandler('seekforward', function() {});
+            navigator.mediaSession.setActionHandler('previoustrack', prev);
+            navigator.mediaSession.setActionHandler('nexttrack', next);
+        }
+    }
 
     function getActiveItem() {
         return activeItem;
@@ -43,9 +57,16 @@ var Player = function(player) {
             return;
         }
 
-        audioElement.play();
+        audioElement.play()
+            .then(() => {
+                _applyMetadata();
+            });
+
+        activeItem.playing = true;
 
         _updateState();
+
+        subscribers[0].notify("play");
     }
 
     function pause() {
@@ -54,8 +75,21 @@ var Player = function(player) {
         }
 
         audioElement.pause();
+        activeItem.playing = false;
 
         _updateState();
+
+        subscribers[0].notify("pause");
+    }
+
+    function next() {
+        pause();
+        subscribers[0].notify("next");        
+    }
+
+    function prev() {
+        pause();
+        subscribers[0].notify("prev");        
     }
 
     function _updateState() {
@@ -68,7 +102,27 @@ var Player = function(player) {
         }
     }
 
+    function _applyMetadata() {
+        if('mediaSession' in navigator && activeItem) {
+            navigator.mediaSession.metadata = new MediaMetadata(activeItem);
+        }
+    }
+
+    function subscribe(subscriber) {
+        subscribers.push(subscriber);
+    }
+
+    function notify(action, data) {
+        switch(action) {
+            case "activeItemChanged":
+                setActiveItem(data.activeItem);
+                play();
+        }
+    }
+
     return {
+        subscribe: subscribe,
+        notify: notify,
         getActiveItem: getActiveItem,
         setActiveItem: setActiveItem,
         play: play,

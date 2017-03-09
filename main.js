@@ -2,6 +2,9 @@
     let playlist = new Playlist(document.getElementById("playlist"));
     let player = new Player(document.querySelector(".now-playing"));
 
+    playlist.subscribe(player);
+    player.subscribe(playlist);
+
     let feedUrls = [
         "https://toolsday.libsyn.com/rss", //Toolsday
         "https://simplecast.com/podcasts/282/rss", //The Bike Shed
@@ -50,31 +53,7 @@
             }, this);
 
             Promise.all(textPromises).then(filfilled => {
-                player.setActiveItem(playlist.getPlaylist()[0]);
+                player.setActiveItem(playlist.getActiveItem());
             });
         });
-
-    // btn.addEventListener("click", e => {
-    //     player.play()
-    //         .then(() => {
-    //             if ('mediaSession' in navigator) {
-    //                 alert("OLE!");
-    //                 navigator.mediaSession.metadata = new MediaMetadata({
-    //                     title: track.title,
-    //                     artist: track.artist,
-    //                     album: track.album,
-    //                     artwork: track.artwork
-    //                 });
-    //             }
-    //         });
-    // });
-
-    // if ('mediaSession' in navigator) {
-    //     navigator.mediaSession.setActionHandler('play', function() {});
-    //     navigator.mediaSession.setActionHandler('pause', function() {});
-    //     navigator.mediaSession.setActionHandler('seekbackward', function() {});
-    //     navigator.mediaSession.setActionHandler('seekforward', function() {});
-    //     navigator.mediaSession.setActionHandler('previoustrack', function() {});
-    //     navigator.mediaSession.setActionHandler('nexttrack', function() {});
-    // }
 })();

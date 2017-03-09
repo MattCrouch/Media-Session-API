@@ -8,14 +8,13 @@ var PlaylistItem = function(channelInfo, itemInfo) {
             { src: "assets/now-playing-placeholder.png",  sizes: "1000x1000", type: "image/png" }
         ],
         url: undefined,
-        pubDate: undefined
+        pubDate: undefined,
+        playing: false
     };
 
     track.title = itemInfo.getElementsByTagName("title")[0].textContent;
     track.artist = channelInfo.getElementsByTagNameNS("http://www.itunes.com/dtds/podcast-1.0.dtd", "author")[0].textContent;
     track.album = channelInfo.getElementsByTagName("title")[0].textContent;
-
-    console.log(track.album, channelInfo.getElementsByTagNameNS(null, "image"));
     
     if(channelInfo.getElementsByTagNameNS(null, "image").length > 0) {
         track.artwork = [{
