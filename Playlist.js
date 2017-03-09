@@ -111,26 +111,31 @@ var Playlist = function(list) {
     }
 
     function notify(action, data) {
+        //TODO: Avoid complete _renderPlaylist() call and update item in situ
         switch(action) {
             case "play":
-                // getActiveItem().playing = true;
                 _renderPlaylist();
                 break;
             case "pause":
-                // getActiveItem().playing = false;
                 _renderPlaylist();
                 break;
             case "next":
                 next();
-                subscribers[0].notify("activeItemChanged", { activeItem: getActiveItem() });
+                _notifySubscribers("activeItemChanged", { activeItem: getActiveItem() });
                 _renderPlaylist();                
                 break;
             case "prev":
                 prev();
-                subscribers[0].notify("activeItemChanged", { activeItem: getActiveItem() });                
+                _notifySubscribers("activeItemChanged", { activeItem: getActiveItem() });                
                 _renderPlaylist();                
                 break;
         }
+    }
+
+    function _notifySubscribers(action, data) {
+        subscribers.forEach(subscriber => {
+            subscriber.notify(action, data);
+        });
     }
 
     return {

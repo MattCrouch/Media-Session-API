@@ -66,7 +66,7 @@ var Player = function(player) {
 
         _updateState();
 
-        subscribers[0].notify("play");
+        _notifySubscribers("play");
     }
 
     function pause() {
@@ -79,17 +79,17 @@ var Player = function(player) {
 
         _updateState();
 
-        subscribers[0].notify("pause");
+        _notifySubscribers("pause");
     }
 
     function next() {
         pause();
-        subscribers[0].notify("next");        
+        _notifySubscribers("next");        
     }
 
     function prev() {
         pause();
-        subscribers[0].notify("prev");        
+        _notifySubscribers("prev");        
     }
 
     function _updateState() {
@@ -118,6 +118,12 @@ var Player = function(player) {
                 setActiveItem(data.activeItem);
                 play();
         }
+    }
+
+    function _notifySubscribers(action, data) {
+        subscribers.forEach(subscriber => {
+            subscriber.notify(action, data);
+        });
     }
 
     return {
