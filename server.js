@@ -92,7 +92,9 @@ app.get('/podcasts', (request, response) => {
                     episode.url = item.enclosure[0]["$"].url;
                     episode.pubDate = item.pubDate[0];
 
-                    if(channel.image) {
+                    if(item["itunes:image"] && item["itunes:image"][0]["$"]) {
+                        episode.artwork = item["itunes:image"][0]["$"].href;
+                    } else if(channel.image) {
                         episode.artwork = channel.image[0].url[0];
                     } else if(channel["itunes:image"]) {
                         episode.artwork = channel["itunes:image"][0]["$"].href;
