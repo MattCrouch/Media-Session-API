@@ -9,8 +9,8 @@ var Player = function(player) {
     let description = document.querySelector(".description");
     let title = description.querySelector(".description .title");
     let album = description.querySelector(".description .album");
-    let progress = description.querySelector(".description progress");
-    let status = document.querySelector(".status");
+    let progress = document.querySelector(".now-playing progress");
+    let status = document.querySelector(".now-playing .status");
 
     player.addEventListener("click", _togglePlayer);
     audioElement.addEventListener("play", _audioPlay);
@@ -27,8 +27,8 @@ var Player = function(player) {
             navigator.mediaSession.setActionHandler('pause', pause);
             navigator.mediaSession.setActionHandler('seekbackward', _seekBackward);
             navigator.mediaSession.setActionHandler('seekforward', _seekForward);
-            // navigator.mediaSession.setActionHandler('previoustrack', _prev);
-            // navigator.mediaSession.setActionHandler('nexttrack', _next);
+            navigator.mediaSession.setActionHandler('previoustrack', _prev);
+            navigator.mediaSession.setActionHandler('nexttrack', _next);
         }
     }
 
