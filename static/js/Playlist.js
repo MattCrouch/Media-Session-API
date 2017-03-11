@@ -107,23 +107,21 @@ var Playlist = function(list) {
     }
 
     function prev() {
-        if(activeIndex - 1 < 0) {
-            activeIndex = items.length - 1;
-        } else {
-            activeIndex--;
+        let newIndex = activeIndex - 1;
+        if(newIndex < 0) {
+            newIndex = items.length - 1;
         }
-        
-        _notifySubscribers("activeItemChanged", { activeItem: getActiveItem() });
+
+        _setActiveIndex(newIndex);
     }
 
     function next() {
-        if(activeIndex + 1 > items.length - 1) {
+        let newIndex = activeIndex + 1;
+        if(newIndex > items.length - 1) {
             activeIndex = 0;
-        } else {
-            activeIndex++;
         }
 
-        _notifySubscribers("activeItemChanged", { activeItem: getActiveItem() });
+        _setActiveIndex(newIndex);
     }
 
     function _handleClick(e) {
@@ -154,9 +152,11 @@ var Playlist = function(list) {
         //TODO: Avoid complete _renderPlaylist() call and update item in situ
         switch(action) {
             case "play":
+                getActiveItem().playing = true;
                 _renderPlaylist();
                 break;
             case "pause":
+                getActiveItem().playing = false;
                 _renderPlaylist();
                 break;
             case "next":
