@@ -3,6 +3,8 @@ var Player = function(player) {
     let audioElement = document.createElement("audio");
     let activeItem;
 
+    const SEEK_AMOUNT = 30;
+
     let artwork = document.querySelector("img.artwork");
     let description = document.querySelector(".description");
     let title = description.querySelector(".description .title");
@@ -12,6 +14,7 @@ var Player = function(player) {
     player.addEventListener("click", _togglePlayer);
     audioElement.addEventListener("play", _audioPlay);
     audioElement.addEventListener("pause", _audioPause);
+    audioElement.addEventListener("ended", _next);
 
     _setUpMediaSessionListeners();
 
@@ -19,10 +22,10 @@ var Player = function(player) {
         if('mediaSession' in navigator) {
             navigator.mediaSession.setActionHandler('play', play);
             navigator.mediaSession.setActionHandler('pause', pause);
-            navigator.mediaSession.setActionHandler('seekbackward', function() {});
-            navigator.mediaSession.setActionHandler('seekforward', function() {});
-            navigator.mediaSession.setActionHandler('previoustrack', prev);
-            navigator.mediaSession.setActionHandler('nexttrack', next);
+            navigator.mediaSession.setActionHandler('seekbackward', _seekBackward);
+            navigator.mediaSession.setActionHandler('seekforward', _seekForward);
+            navigator.mediaSession.setActionHandler('previoustrack', _prev);
+            navigator.mediaSession.setActionHandler('nexttrack', _next);
         }
     }
 
@@ -99,12 +102,20 @@ var Player = function(player) {
         audioElement.pause();
     }
 
-    function next() {
+    function _seekBackward() {
+        audioElement.currentTime = Math.max(audioElement.currentTime - SEEK_AMOUNT, 0);
+    }
+
+    function _seekForward() {
+        audioElement.currentTime = Math.min(audioElement.currentTime + SEEK_AMOUNT, audioElement.duration);
+    }
+
+    function _next() {
         pause();
         _notifySubscribers("next");        
     }
 
-    function prev() {
+    function _prev() {
         pause();
         _notifySubscribers("prev");        
     }

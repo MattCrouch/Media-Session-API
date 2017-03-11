@@ -118,7 +118,7 @@ var Playlist = function(list) {
     function next() {
         let newIndex = activeIndex + 1;
         if(newIndex > items.length - 1) {
-            activeIndex = 0;
+            newIndex = 0;
         }
 
         _setActiveIndex(newIndex);
