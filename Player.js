@@ -60,6 +60,9 @@ var Player = function(player) {
         audioElement.play()
             .then(() => {
                 _applyMetadata();
+            })
+            .catch(err => {
+                console.log(err);
             });
 
         activeItem.playing = true;
