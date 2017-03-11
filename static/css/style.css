@@ -126,6 +126,7 @@ html, body {
     -moz-appearance: none;
     appearance: none;
     border: none;
+    opacity: 0.75;
 }
 
 .now-playing progress::-webkit-progress-bar {
