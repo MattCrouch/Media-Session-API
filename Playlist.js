@@ -3,12 +3,21 @@ var Playlist = function(list) {
     let items = [];
     let activeIndex = 0;
 
+    list.addEventListener("click", _handleClick);
+
     function getPlaylist() {
         return items;
     }
 
     function getActiveItem() {
         return items[activeIndex];
+    }
+
+    function _setActiveIndex(index) {
+        getActiveItem().playing = false;
+        activeIndex = index;
+        
+        _notifySubscribers("activeItemChanged", { activeItem: getActiveItem() });
     }
 
     function addToPlaylist(item) {
@@ -39,14 +48,15 @@ var Playlist = function(list) {
     function _renderPlaylist() {
         list.innerHTML = "";
 
-        items.forEach(function(item) {
-            list.appendChild(_createPlaylistItem(item));
+        items.forEach(function(item, index) {
+            list.appendChild(_createPlaylistItem(item, index));
         }, this);
     }
 
-    function _createPlaylistItem(item) {
+    function _createPlaylistItem(item, index) {
         let li = document.createElement("li");
         li.tabIndex = 0;
+        li.setAttribute("data-id", index);
 
         let info = document.createElement("div");
         info.className = "info";
@@ -86,14 +96,24 @@ var Playlist = function(list) {
         return li;
     }
 
+    function _play() {
+        getActiveItem().playing = true;
+        _notifySubscribers("play");
+    }
+
+    function _pause() {
+        getActiveItem().playing = false;
+        _notifySubscribers("pause");
+    }
+
     function prev() {
         if(activeIndex - 1 < 0) {
             activeIndex = items.length - 1;
         } else {
             activeIndex--;
         }
-
-        console.log(activeIndex);
+        
+        _notifySubscribers("activeItemChanged", { activeItem: getActiveItem() });
     }
 
     function next() {
@@ -103,7 +123,27 @@ var Playlist = function(list) {
             activeIndex++;
         }
 
-        console.log(activeIndex);
+        _notifySubscribers("activeItemChanged", { activeItem: getActiveItem() });
+    }
+
+    function _handleClick(e) {
+        if(e.target.nodeName == "UL") {
+            return;
+        }
+
+        let index = e.target.getAttribute("data-id");
+
+        if(index === activeIndex) {
+            //Toggle play/pause
+            if(!getActiveItem().playing) {
+                _play();
+            } else {
+                _pause();
+            }
+        } else {
+            //Switch to target
+            _setActiveIndex(index);
+        }
     }
 
     function subscribe(subscriber) {
@@ -121,12 +161,10 @@ var Playlist = function(list) {
                 break;
             case "next":
                 next();
-                _notifySubscribers("activeItemChanged", { activeItem: getActiveItem() });
                 _renderPlaylist();                
                 break;
             case "prev":
                 prev();
-                _notifySubscribers("activeItemChanged", { activeItem: getActiveItem() });                
                 _renderPlaylist();                
                 break;
         }

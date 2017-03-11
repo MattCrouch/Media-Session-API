@@ -11,7 +11,6 @@
         "https://answermethis.libsyn.com/rss", //Answer Me This
         // "https://rss.acast.com/themodernmann", //The Modern Mann
         // "https://phptownhall.com/itunes.rss", //PHP Town Hall
-
     ];
 
     let fetchUrls = [];

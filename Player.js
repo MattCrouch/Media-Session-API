@@ -117,6 +117,13 @@ var Player = function(player) {
             case "activeItemChanged":
                 setActiveItem(data.activeItem);
                 play();
+                break;
+            case "play":
+                play();
+                break;
+            case "pause":
+                pause();
+                break;
         }
     }
 

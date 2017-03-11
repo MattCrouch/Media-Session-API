@@ -63,6 +63,7 @@ html, body {
     padding: 0.5rem;
     line-height: 1.5;
     border-bottom: 1px solid #e0e0e0;
+    cursor: pointer;
 }
 
 .playlist > li:last-child {
@@ -74,6 +75,7 @@ html, body {
     align-items: center;
     flex-grow: 1;
     min-width: 0;
+    pointer-events: none;
 }
 
 .playlist > li .artwork {
