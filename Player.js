@@ -10,6 +10,8 @@ var Player = function(player) {
     let status = document.querySelector(".status");
 
     player.addEventListener("click", _togglePlayer);
+    audioElement.addEventListener("play", _audioPlay);
+    audioElement.addEventListener("pause", _audioPause);
 
     _setUpMediaSessionListeners();
 
@@ -52,24 +54,41 @@ var Player = function(player) {
         }
     }
 
-    function play() {
-        if(!audioElement.paused) {
-            return;
-        }
-
-        audioElement.play()
-            .then(() => {
-                _applyMetadata();
-            })
-            .catch(err => {
-                console.log(err);
-            });
-
+    function _audioPlay() {
         activeItem.playing = true;
 
         _updateState();
 
         _notifySubscribers("play");
+    }
+
+    function _audioPause() {
+        activeItem.playing = false;
+
+        _updateState();
+
+        _notifySubscribers("pause");
+    }
+
+    function play() {
+        if(!audioElement.paused) {
+            return;
+        }
+
+        //Returns a promise in Chrome only
+        let playAudioElement = audioElement.play();
+
+        if(playAudioElement !== undefined) {
+            playAudioElement.then(() => {
+                _applyMetadata();
+            })
+            .catch(err => {
+                console.log(err);
+            });
+        } else {
+            //We can only assume everything's gone well so far
+            _applyMetadata();
+        }
     }
 
     function pause() {
@@ -78,11 +97,6 @@ var Player = function(player) {
         }
 
         audioElement.pause();
-        activeItem.playing = false;
-
-        _updateState();
-
-        _notifySubscribers("pause");
     }
 
     function next() {
