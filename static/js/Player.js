@@ -9,12 +9,15 @@ var Player = function(player) {
     let description = document.querySelector(".description");
     let title = description.querySelector(".description .title");
     let album = description.querySelector(".description .album");
+    let progress = description.querySelector(".description progress");
     let status = document.querySelector(".status");
 
     player.addEventListener("click", _togglePlayer);
     audioElement.addEventListener("play", _audioPlay);
     audioElement.addEventListener("pause", _audioPause);
     audioElement.addEventListener("ended", _next);
+    audioElement.addEventListener("loadedmetadata", _setProgress);
+    audioElement.addEventListener("timeupdate", _updateProgress);
 
     _setUpMediaSessionListeners();
 
@@ -24,8 +27,8 @@ var Player = function(player) {
             navigator.mediaSession.setActionHandler('pause', pause);
             navigator.mediaSession.setActionHandler('seekbackward', _seekBackward);
             navigator.mediaSession.setActionHandler('seekforward', _seekForward);
-            navigator.mediaSession.setActionHandler('previoustrack', _prev);
-            navigator.mediaSession.setActionHandler('nexttrack', _next);
+            // navigator.mediaSession.setActionHandler('previoustrack', _prev);
+            // navigator.mediaSession.setActionHandler('nexttrack', _next);
         }
     }
 
@@ -41,6 +44,8 @@ var Player = function(player) {
         description.classList.remove("hidden");
         title.textContent = item.title;
         album.textContent = item.album;
+        progress.value = 0;
+        progress.max = 0; //Until metadata appears
 
         status.classList.remove("hidden");
 
@@ -71,6 +76,14 @@ var Player = function(player) {
         _updateState();
 
         _notifySubscribers("pause");
+    }
+
+    function _setProgress(e) {
+        progress.max = audioElement.duration;
+    }
+
+    function _updateProgress(e) {
+        progress.value = audioElement.currentTime;
     }
 
     function play() {
