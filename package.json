@@ -11,5 +11,11 @@
   "license": "ISC",
   "devDependencies": {
     "http-server": "^0.9.0"
+  },
+  "dependencies": {
+    "express": "^4.15.2",
+    "node-fetch": "^1.6.3",
+    "xml2js": "^0.4.17",
+    "xml2js-es6-promise": "^1.1.1"
   }
 }

@@ -113,9 +113,9 @@ var Player = function(player) {
         status.textContent = "";
 
         if(audioElement.paused) {
-            status.innerHTML = "<img src='assets/play.png' alt='' />";
+            status.innerHTML = "<img src='static/assets/play.png' alt='' />";
         } else {
-            status.innerHTML = "<img src='assets/pause.png' alt='' />";            
+            status.innerHTML = "<img src='static/assets/pause.png' alt='' />";            
         }
     }
 

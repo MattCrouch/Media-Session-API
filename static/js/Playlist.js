@@ -81,7 +81,7 @@ var Playlist = function(list) {
         status.className = "status";
 
         if(item.playing) {
-            status.innerHTML = "<img src='assets/play.png' alt='' />";
+            status.innerHTML = "<img src='static/assets/play.png' alt='' />";
         }
 
         description.appendChild(title);
