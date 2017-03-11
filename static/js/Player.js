@@ -49,7 +49,11 @@ var Player = function(player) {
 
         status.classList.remove("hidden");
 
-        audioElement.src = item.url;
+        if(item.url) {
+            audioElement.src = item.url;
+        } else {
+            audioElement.src = "";
+        }
 
         _updateState();
     }

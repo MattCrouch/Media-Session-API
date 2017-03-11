@@ -1,11 +1,11 @@
 var PlaylistItem = function(item) {
     //Default values
     var track = {
-        title: "TITLE",
-        artist: "ARTIST",
-        album: "ALBUM",
+        title: undefined,
+        artist: undefined,
+        album: undefined,
         artwork: [
-            { src: "assets/now-playing-placeholder.png",  sizes: "1000x1000", type: "image/png" }
+            { src: "static/assets/default-icon.png",  sizes: "1000x1000", type: "image/png" }
         ],
         url: undefined,
         pubDate: undefined,
@@ -19,9 +19,7 @@ var PlaylistItem = function(item) {
     track.pubDate = new Date(item.pubDate);
     
     track.artwork = [{
-        src: item.artwork,
-        sizes: "2048x2048",
-        type: "image/jpg"
+        src: item.artwork
     }];
     
     return track;
