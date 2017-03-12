@@ -10,13 +10,14 @@ var credentials = {key: privateKey, cert: certificate};
 var express = require('express');
 var app = express();
 
-app.use('/static', express.static(`${__dirname}/static`));
+app.use('/static', express.static(`${__dirname}/static`, { maxAge: 31557600000 })); //Cache for a year
 
 app.get('/', (request, response) => {
     response.sendFile(path.resolve(__dirname, 'index.html'));
 });
 
 app.get('/podcasts', (request, response) => {
+    response.setHeader('Cache-Control', 'public, maxAge=1800');
     response.setHeader('Content-Type', 'application/json');
 
     try {
