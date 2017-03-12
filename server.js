@@ -87,7 +87,13 @@ app.get('/podcasts', (request, response) => {
                     let episode = {};
 
                     episode.title = item.title[0];
-                    episode.artist = channel["itunes:author"][0];
+
+                    if(item["itunes:author"]) {
+                        episode.artist = item["itunes:author"][0];                        
+                    } else if(channel["itunes:author"]) {
+                        episode.artist = channel["itunes:author"][0];
+                    }
+                    
                     episode.album = channel.title[0];
                     episode.url = item.enclosure[0]["$"].url;
                     episode.pubDate = item.pubDate[0];
