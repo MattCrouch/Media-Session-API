@@ -9,15 +9,27 @@ var Playlist = function(list) {
         return items;
     }
 
+    function _getItem(index) {
+        return items[index];
+    }
+
     function getActiveItem() {
-        return items[activeIndex];
+        return _getItem(activeIndex);
     }
 
     function _setActiveIndex(index) {
         getActiveItem().playing = false;
+        _updateItem(activeIndex);
+
         activeIndex = index;
+
+        _updateItem(activeIndex);
         
         _notifySubscribers("activeItemChanged", { activeItem: getActiveItem() });
+    }
+
+    function _getItemEntry(index) {
+        return list.querySelector(`li[data-id="${index}"]`);
     }
 
     function addToPlaylist(item) {
@@ -91,17 +103,33 @@ var Playlist = function(list) {
         return li;
     }
 
+    function _updateItem(index) {
+        let item = _getItem(index);
+        let li = _getItemEntry(index);
+        let status = li.querySelector(".status");
+
+        if(item.playing) {
+            status.innerHTML = "<img src='static/assets/play.png' alt='' />";
+        } else {
+            status.innerHTML = "";
+        }
+    }
+
     function _play() {
         getActiveItem().playing = true;
+        _updateItem(activeIndex);
         _notifySubscribers("play");
     }
 
     function _pause() {
         getActiveItem().playing = false;
+        _updateItem(activeIndex);
         _notifySubscribers("pause");
     }
 
     function prev() {
+        getActiveItem().playing = false;
+
         let newIndex = activeIndex - 1;
         if(newIndex < 0) {
             newIndex = items.length - 1;
@@ -111,6 +139,8 @@ var Playlist = function(list) {
     }
 
     function next() {
+        getActiveItem().playing = false;
+
         let newIndex = activeIndex + 1;
         if(newIndex > items.length - 1) {
             newIndex = 0;
@@ -148,19 +178,17 @@ var Playlist = function(list) {
         switch(action) {
             case "play":
                 getActiveItem().playing = true;
-                _renderPlaylist();
+                _updateItem(activeIndex);
                 break;
             case "pause":
                 getActiveItem().playing = false;
-                _renderPlaylist();
+                _updateItem(activeIndex);
                 break;
             case "next":
                 next();
-                _renderPlaylist();                
                 break;
             case "prev":
                 prev();
-                _renderPlaylist();                
                 break;
         }
     }
