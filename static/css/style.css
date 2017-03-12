@@ -118,6 +118,7 @@ html, body {
 }
 
 .now-playing progress {
+    display: block; /* for Safari */
     position: absolute;
     bottom: 0.25rem;
     width: 100%;
