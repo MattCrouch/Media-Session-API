@@ -14,7 +14,7 @@ var Player = function(player) {
     let status = document.querySelector(".now-playing .status");
 
     player.addEventListener("click", _togglePlayer);
-    // audioElement.addEventListener("play", _audioPlay);
+    player.addEventListener("keydown", _handleKeyDown);    
     audioElement.addEventListener("playing", _audioPlay);
     audioElement.addEventListener("pause", _audioPause);
     audioElement.addEventListener("waiting", _audioWaiting);
@@ -66,6 +66,13 @@ var Player = function(player) {
             play();
         } else {
             pause();
+        }
+    }
+
+    function _handleKeyDown(e) {
+        if(e.keyCode == 13) {
+            //Hit enter
+            _togglePlayer();
         }
     }
 

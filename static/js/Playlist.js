@@ -4,6 +4,7 @@ var Playlist = function(list) {
     let activeIndex = 0;
 
     list.addEventListener("click", _handleClick);
+    list.addEventListener("keydown", _handleKeyDown);
 
     function getPlaylist() {
         return items;
@@ -127,13 +128,30 @@ var Playlist = function(list) {
         _notifySubscribers("pause");
     }
 
-    function prev() {
-        getActiveItem().playing = false;
+    function _getPrevIndex(index) {
+        index = parseInt(index, 10);
 
-        let newIndex = activeIndex - 1;
+        let newIndex = index - 1;
         if(newIndex < 0) {
             newIndex = items.length - 1;
         }
+        return newIndex;
+    }
+
+    function _getNextIndex(index) {
+        index = parseInt(index, 10);
+
+        let newIndex = index + 1;
+        if(newIndex > items.length - 1) {
+            newIndex = 0;
+        }
+        return newIndex;
+    }
+
+    function prev() {
+        getActiveItem().playing = false;
+
+        let newIndex = _getPrevIndex(activeIndex);
 
         _setActiveIndex(newIndex);
     }
@@ -141,10 +159,7 @@ var Playlist = function(list) {
     function next() {
         getActiveItem().playing = false;
 
-        let newIndex = activeIndex + 1;
-        if(newIndex > items.length - 1) {
-            newIndex = 0;
-        }
+        let newIndex = _getNextIndex(activeIndex);
 
         _setActiveIndex(newIndex);
     }
@@ -166,6 +181,32 @@ var Playlist = function(list) {
         } else {
             //Switch to target
             _setActiveIndex(index);
+        }
+    }
+
+    function _handleKeyDown(e) {
+        let focusedItemId = document.activeElement.getAttribute("data-id");
+
+        const mapping = {
+            UP: 38,
+            DOWN: 40,
+            ENTER: 13
+        };
+
+        if(Object.values(mapping).indexOf(e.keyCode) !== -1) {
+            //In mapping, disable default behaviour
+            e.preventDefault();
+        }
+
+        if(e.keyCode == mapping.UP) {
+            //Focus previous element
+            _getItemEntry(_getPrevIndex(focusedItemId)).focus();            
+        } else if(e.keyCode == mapping.DOWN) {
+            //Focus next element
+            _getItemEntry(_getNextIndex(focusedItemId)).focus();
+        } else if(e.keyCode == mapping.ENTER) {
+            //Play item
+            _setActiveIndex(focusedItemId);
         }
     }
 
