@@ -27,12 +27,7 @@ var Playlist = function(list) {
         _renderPlaylist();
     }
 
-    function removeFromPlaylist(item) {
-        //TODO: Removal
-    }
-
     function _sortPlaylist() {
-        //TODO: Only do at the end? Wasteful otherwise.
         function byDateDesc(a, b) {
             if(a.pubDate < b.pubDate) {
                 return 1;
@@ -181,7 +176,6 @@ var Playlist = function(list) {
         notify: notify,
         getPlaylist: getPlaylist,
         getActiveItem: getActiveItem,
-        add: addToPlaylist,
-        remove: removeFromPlaylist,
+        add: addToPlaylist
     }
 };
