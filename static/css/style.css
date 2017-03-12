@@ -73,6 +73,9 @@ html, body {
     align-items: center;
     flex-grow: 1;
     min-width: 0;
+}
+
+.playlist > li .info, .playlist > li .status {
     pointer-events: none;
 }
 

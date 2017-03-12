@@ -70,7 +70,6 @@ var Player = function(player) {
     }
 
     function _audioPlay() {
-        console.log("playing called");
         activeItem.playing = true;
         buffering = false;
 
