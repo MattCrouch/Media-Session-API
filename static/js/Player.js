@@ -2,6 +2,7 @@ var Player = function(player) {
     let subscribers = [];
     let audioElement = document.createElement("audio");
     let activeItem;
+    let buffering = false;
 
     const SEEK_AMOUNT = 30;
 
@@ -13,8 +14,10 @@ var Player = function(player) {
     let status = document.querySelector(".now-playing .status");
 
     player.addEventListener("click", _togglePlayer);
-    audioElement.addEventListener("play", _audioPlay);
+    // audioElement.addEventListener("play", _audioPlay);
+    audioElement.addEventListener("playing", _audioPlay);
     audioElement.addEventListener("pause", _audioPause);
+    audioElement.addEventListener("waiting", _audioWaiting);
     audioElement.addEventListener("ended", _next);
     audioElement.addEventListener("loadedmetadata", _setProgress);
     audioElement.addEventListener("timeupdate", _updateProgress);
@@ -67,7 +70,9 @@ var Player = function(player) {
     }
 
     function _audioPlay() {
+        console.log("playing called");
         activeItem.playing = true;
+        buffering = false;
 
         _updateState();
 
@@ -80,6 +85,16 @@ var Player = function(player) {
         _updateState();
 
         _notifySubscribers("pause");
+    }
+
+    function _audioWaiting() {
+        activeItem.playing = false;
+
+        buffering = true;
+
+        _updateState();
+
+        _notifySubscribers("waiting");
     }
 
     function _setProgress(e) {
@@ -141,8 +156,13 @@ var Player = function(player) {
         status.textContent = "";
 
         if(audioElement.paused) {
+            status.classList.remove("loading");
             status.innerHTML = "<img src='static/assets/play.png' alt='' />";
+        } else if(buffering) {
+            status.classList.add("loading");
+            status.innerHTML = "<img src='static/assets/loading.png' alt='' />";
         } else {
+            status.classList.remove("loading");
             status.innerHTML = "<img src='static/assets/pause.png' alt='' />";            
         }
     }
