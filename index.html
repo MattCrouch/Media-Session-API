@@ -10,8 +10,8 @@
     <body>
         <div class="wrapper">
             <div id="player" class="player">
-                <section class="now-playing" tabindex="0">
-                    <img src="static/assets/default-icon.png" alt="Now Playing" class="artwork" />
+                <section class="now-playing" tabindex="0" aria-label="Player">
+                    <img src="static/assets/default-icon.png" alt="Podcast Artwork" class="artwork" />
                    
                     <div class="description hidden">
                         <span class="title"></span>
@@ -25,7 +25,7 @@
                     <progress max="100" value="0"></progress>
                 </section>
 
-                <ul id="playlist" class="playlist">
+                <ul id="playlist" class="playlist" aria-label="Playlist">
                     <li>Loading...</li>
                 </ul>
             </div>

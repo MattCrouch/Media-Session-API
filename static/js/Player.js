@@ -50,6 +50,8 @@ var Player = function(player) {
         progress.value = 0;
         progress.max = 0; //Until metadata appears
 
+        player.setAttribute("aria-label", `Playing ${item.title} from ${item.album}`);
+
         status.classList.remove("hidden");
 
         if(item.url) {

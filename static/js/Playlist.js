@@ -65,6 +65,7 @@ var Playlist = function(list) {
         let li = document.createElement("li");
         li.tabIndex = 0;
         li.setAttribute("data-id", index);
+        li.setAttribute("aria-label", `${item.title} from ${item.album}`);
 
         let info = document.createElement("div");
         info.className = "info";
