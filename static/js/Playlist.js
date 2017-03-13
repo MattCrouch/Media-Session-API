@@ -172,6 +172,10 @@ var Playlist = function(list) {
 
         let index = e.target.getAttribute("data-id");
 
+        _selectItem(index);
+    }
+
+    function _selectItem(index) {
         if(index === activeIndex) {
             //Toggle play/pause
             if(!getActiveItem().playing) {
@@ -207,7 +211,7 @@ var Playlist = function(list) {
             _getItemEntry(_getNextIndex(focusedItemId)).focus();
         } else if(e.keyCode == mapping.ENTER) {
             //Play item
-            _setActiveIndex(focusedItemId);
+            _selectItem(focusedItemId);
         }
     }
 
