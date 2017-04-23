@@ -24,4 +24,11 @@
     
     //Send the request
     getPodcasts.send();
+
+    // Register the service worker
+    if ('serviceWorker' in navigator) {
+        navigator.serviceWorker
+            .register('./serviceworker.js')
+            .then(function() { console.log('Service Worker Registered'); });
+    }
 })();

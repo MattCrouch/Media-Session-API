@@ -80,6 +80,7 @@ html, body {
 }
 
 .playlist > li .artwork {
+    max-width: 3rem;
     max-height: 3rem;
     margin-right: 0.5rem;
     border-radius: 2px;

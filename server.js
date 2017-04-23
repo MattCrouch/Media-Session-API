@@ -18,6 +18,12 @@ const port = 8443;
 //Serve any files in '/static' directly
 app.use('/static', express.static(`${__dirname}/static`, { maxAge: 31557600000 })); //Cache for a year
 
+//Serve the Service Worker from the root directory
+app.get('/serviceworker.js', (request, response) => {
+    response.setHeader('content-type', 'application/javascript');
+    response.sendFile(path.resolve(__dirname, 'serviceworker.js'));
+});
+
 //Serve index.html when requesting the root path
 app.get('/', (request, response) => {
     response.sendFile(path.resolve(__dirname, 'index.html'));
@@ -49,7 +55,7 @@ app.get('/podcasts', (request, response) => {
     //Define which RSS feeds to pull
     let feedUrls = [
         "https://toolsday.libsyn.com/rss", //Toolsday
-        "https://simplecast.com/podcasts/282/rss", //The Bike Shed
+        // "https://simplecast.com/podcasts/282/rss", //The Bike Shed
         "https://answermethis.libsyn.com/rss", //Answer Me This
         "https://audioboom.com/channels/2399216.rss", //No Such Thing As A Fish
         // "https://rss.acast.com/themodernmann", //The Modern Mann
